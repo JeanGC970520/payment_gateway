@@ -1,6 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:payment_gateway/presentation/blocs/cubit/user_form_cubit.dart';
 import 'package:payment_gateway/presentation/widgets/inputs/reusable_text_form_field.dart';
 import 'package:payment_gateway/presentation/widgets/shared/reusable_box_decoration.dart';
 
@@ -17,6 +21,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final userFormCubit = context.watch<UserFormCubit>();
     
     return Scaffold(
       body: SingleChildScrollView(
@@ -89,21 +94,25 @@ class HomeScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 12,),
         
-                  const ReusableTextFormField(
+                  ReusableTextFormField(
                     label: 'Name',
                     hintText: 'Ex. John Doe',
-                    prefixIcon: Icon(CupertinoIcons.person_alt, size: 32,),
+                    prefixIcon: const Icon(CupertinoIcons.person_alt, size: 32,),
+                    onChanged: userFormCubit.nameChange,
+                    errorMessage: userFormCubit.state.name.errorMessage,
                   ),
                   const SizedBox(height: 12,),
         
-                  const ReusableTextFormField(
+                  ReusableTextFormField(
                     label: 'Adress Line',
                     hintText: 'Ex. 123 Main St.',
-                    prefixIcon: Icon(Icons.pin_drop, size: 32,),
+                    prefixIcon: const Icon(Icons.pin_drop, size: 32,),
+                    onChanged: userFormCubit.addressChange,
+                    errorMessage: userFormCubit.state.address.errorMessage,
                   ),
                   const SizedBox(height: 12,),
         
-                  const Row(
+                  Row(
                     children: [
                       
                       Expanded(
@@ -111,18 +120,22 @@ class HomeScreen extends StatelessWidget {
                         child: ReusableTextFormField(
                           label: 'City',
                           hintText: 'Ex. New Delhi',
-                          prefixIcon: Icon(Icons.location_city_rounded, size: 32,),
+                          prefixIcon: const Icon(Icons.location_city_rounded, size: 32,),
+                          onChanged: userFormCubit.cityChange,
+                          errorMessage: userFormCubit.state.city.errorMessage,
                         ),
                       ),
         
-                      SizedBox(width: 20,),
+                      const SizedBox(width: 20,),
         
                       Expanded(
                         flex: 5,
                         child: ReusableTextFormField(
                           label: 'State',
                           hintText: 'Ex. DL',
-                          prefixIcon: Icon(CupertinoIcons.map, size: 32,),
+                          prefixIcon: const Icon(CupertinoIcons.map, size: 32,),
+                          onChanged: userFormCubit.stateInputChange,
+                          errorMessage: userFormCubit.state.stateInput.errorMessage,
                         ),
                       ),
         
@@ -133,12 +146,14 @@ class HomeScreen extends StatelessWidget {
                   Row(
                     children: [
                       
-                      const Expanded(
+                      Expanded(
                         flex: 5,
                         child: ReusableTextFormField(
                           label: 'Country',
                           hintText: 'Ex. MX for Mexico',
-                          prefixIcon: Icon(Icons.abc, size: 32,),
+                          prefixIcon: const Icon(Icons.abc, size: 32,),
+                          onChanged: userFormCubit.countryChange,
+                          errorMessage: userFormCubit.state.country.errorMessage,
                         ),
                       ),
         
@@ -154,6 +169,8 @@ class HomeScreen extends StatelessWidget {
                           inputFormatters: [
                             FilteringTextInputFormatter.allow(RegExp(r'[0-9]+')),
                           ],
+                          onChanged: userFormCubit.zipcodeChange,
+                          errorMessage: userFormCubit.state.zipcode.errorMessage,
                         ),
                       ),
         
@@ -166,7 +183,12 @@ class HomeScreen extends StatelessWidget {
                     width: double.infinity,
                     child: ElevatedButton.icon(
                       onPressed: () {
-                        
+                        userFormCubit.onSubmit();
+
+                        if( !userFormCubit.state.isValid ) return;
+
+                        debugPrint(userFormCubit.getUser().toString());
+
                       }, 
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blueAccent.shade400,
