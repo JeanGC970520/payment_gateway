@@ -5,12 +5,14 @@ class ReusableBoxDecoration extends StatelessWidget {
   final Widget child;
   final Color color;
   final Color shadowColor;
+  final double horizontalPadding;
   
   const ReusableBoxDecoration({
     super.key,
     required this.child,
     this.color = Colors.white,
     this.shadowColor = Colors.black87,
+    this.horizontalPadding = 5.0,
   });
 
   @override
@@ -19,7 +21,7 @@ class ReusableBoxDecoration extends StatelessWidget {
       decoration: BoxDecoration(
           color:color,
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(width: 3.5, color: color),
+          border: Border.all(width: 3.5, color: shadowColor),
           boxShadow: [
             BoxShadow(
               color: shadowColor,
@@ -27,7 +29,10 @@ class ReusableBoxDecoration extends StatelessWidget {
             )
           ]
       ),
-      child: child,
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: horizontalPadding,),
+        child: child,
+      ),
     );
   }
 }
