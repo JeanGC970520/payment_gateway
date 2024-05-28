@@ -30,11 +30,13 @@ environment:
 dependencies:
   cupertino_icons: ^1.0.6
   dio: ^5.4.3+1
+  equatable: ^2.0.5
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.5
   flutter_dotenv: ^5.1.0
   flutter_stripe: ^10.1.1
+  formz: ^0.7.0
   pay: ^2.0.0
 
 dev_dependencies:
