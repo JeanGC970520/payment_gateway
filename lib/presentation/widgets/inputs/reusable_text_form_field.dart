@@ -19,7 +19,7 @@ class ReusableTextFormField extends StatelessWidget {
     this.borderWidth = 1.6,
     this.enabled = true,
     this.inputFormatters,
-    this.fontSize = 18,
+    this.fontSize = 22,
   });
 
   final String? label;
@@ -41,10 +41,11 @@ class ReusableTextFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
+    final size = MediaQuery.of(context).size;
 
     return ReusableBoxDecoration(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 5,),
+      child: SizedBox(
+        height: size.height * 0.07,
         child: TextFormField(
           enabled: enabled,
           controller: controller,
@@ -54,7 +55,9 @@ class ReusableTextFormField extends StatelessWidget {
           keyboardType: keyboardType,
           style: TextStyle(fontSize: fontSize),
           inputFormatters: inputFormatters,
+          textAlignVertical: TextAlignVertical.center,
           decoration: InputDecoration(
+            border: InputBorder.none,
             enabledBorder: InputBorder.none,
             focusedBorder: InputBorder.none,
             errorBorder: InputBorder.none,
@@ -63,10 +66,10 @@ class ReusableTextFormField extends StatelessWidget {
             label: label != null 
               ? Text(label!, style: TextStyle(color: Colors.black.withOpacity(0.65)),) 
               : null,
-            labelStyle: const TextStyle(fontSize: 20),
+            labelStyle: const TextStyle(fontSize: 22),
             hintText: hintText,
             errorText: errorMessage,
-            errorStyle: const TextStyle(fontSize: 14),
+            errorStyle: const TextStyle(fontSize: 16),
             focusColor: colors.primary,
             prefixIcon: prefixIcon,
             suffixIcon: suffixIcon, 
