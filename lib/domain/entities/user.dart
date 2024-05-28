@@ -18,4 +18,9 @@ class User {
     required this.zipcode,
   });
 
+  @override
+  String toString() {
+    return 'User( $name, $address, $city, $stateCode, $countryCode, $zipcode )';
+  }
+
 }
