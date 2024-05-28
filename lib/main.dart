@@ -1,19 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 
 import 'package:payment_gateway/presentation/screens/home_screen.dart';
+import 'package:payment_gateway/presentation/blocs/cubit/user_form_cubit.dart';
 
 void main() async {
-
   WidgetsFlutterBinding.ensureInitialized();
 
   await dotenv.load(fileName: '.env');
   Stripe.publishableKey = dotenv.env['STRIPE_PUBLISH_KEY']!;
   await Stripe.instance.applySettings();
 
-  runApp(const MyApp());
+  runApp(MultiBlocProvider(
+    providers: [
+      BlocProvider(
+        create: (context) => UserFormCubit(),
+      ),
+    ],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
