@@ -3,13 +3,13 @@ import 'package:formz/formz.dart';
 
 enum ZipcodeError { empty, format }
 
-class Zipcode extends FormzInput<String, ZipcodeError> {
+class ZipcodeInput extends FormzInput<String, ZipcodeError> {
 
   static final RegExp zipcodeRegex = RegExp(r'^\d{5}$');
   
-  const Zipcode.pure() : super.pure('');
+  const ZipcodeInput.pure() : super.pure('');
 
-  const Zipcode.dirty(super.value) : super.dirty();
+  const ZipcodeInput.dirty(super.value) : super.dirty();
 
   String? get errorMessage {
 
