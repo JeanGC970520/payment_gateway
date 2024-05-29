@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:payment_gateway/presentation/blocs/payment_gateway/payment_gateway_bloc.dart';
 
 import 'package:payment_gateway/presentation/screens/home_screen.dart';
 import 'package:payment_gateway/presentation/blocs/cubit/user_form_cubit.dart';
@@ -19,6 +20,9 @@ void main() async {
       BlocProvider(
         create: (context) => UserFormCubit(),
       ),
+      BlocProvider(
+        create: (context) => PaymentGatewayBloc(),
+      )
     ],
     child: const MyApp(),
   ));
