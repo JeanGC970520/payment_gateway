@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 
 import '../../../domain/entities/user.dart';
 
@@ -37,7 +38,7 @@ class PaymentGatewayBloc extends Bloc<PaymentGatewayEvent, PaymentGatewayState> 
         data: body, 
       ); 
 
-      debugPrint('Payment Intent Body: ${response.data.toString()}');
+      // debugPrint('Payment Intent Body: ${response.data.toString()}');
       return response.data; 
     } catch (err) { 
       debugPrint('Error charging user: ${err.toString()}'); 
@@ -45,11 +46,47 @@ class PaymentGatewayBloc extends Bloc<PaymentGatewayEvent, PaymentGatewayState> 
     } 
   } 
 
+  Future<void> initPaymentIntent(Map<dynamic, dynamic> data) async {
+    debugPrint('Initializating payment sheet');
+    await Stripe.instance.initPaymentSheet(
+      paymentSheetParameters: SetupPaymentSheetParameters(
+        // Set to true for custom flow
+        customFlow: false,
+        // Main params
+        merchantDisplayName: 'Flutter Stripe Store demo',
+        paymentIntentClientSecret: data['client_secret'],
+        // Customer keys
+        customerEphemeralKeySecret: data['ephemeralKey'],
+        customerId: data['id'],
+        style: ThemeMode.dark,
+      )
+    );
+    debugPrint("Payment sheet it's ready");
+  }
+
+  Future<bool> presentPaymentSheet() async {
+    try {
+      await Stripe.instance.presentPaymentSheet();
+      return true;
+    } on StripeException catch (err) {
+      debugPrint('Error on present payment sheet: $err');
+      return false;
+    }
+  }
+
   void _mapMakePaymentEventToState(
     MakePaymentEvent event, Emitter<PaymentGatewayState> emit
   ) async {
     final response = await createPaymentIntent(event.amount, event.currency);
     debugPrint(response?.values.toString());
+
+    // If create paymenent intent is not success.
+    if(response == null) return;
+
+    await initPaymentIntent(response);
+
+    final paymentStatus = await presentPaymentSheet();
+    debugPrint('Payment status: $paymentStatus');
   }
 
 }
