@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:payment_gateway/presentation/blocs/cubit/user_form_cubit.dart';
 import 'package:payment_gateway/presentation/blocs/payment_gateway/payment_gateway_bloc.dart';
+import 'package:payment_gateway/presentation/views/paypal_payment.dart';
 import 'package:payment_gateway/presentation/widgets/inputs/reusable_text_form_field.dart';
 import 'package:payment_gateway/presentation/widgets/shared/reusable_box_decoration.dart';
 
@@ -218,13 +219,36 @@ class _Body extends StatelessWidget {
     
                     }, 
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blueAccent.shade400,
+                      backgroundColor: Colors.blueAccent.shade200,
                       foregroundColor: Colors.white.withAlpha(230)
                     ),
                     icon: const Icon(CupertinoIcons.money_dollar_circle, size: 35,), 
                     label: const Text('Proced to pay', style: TextStyle(fontSize: 27),),
                   ),
-                )
+                ),
+
+                const SizedBox(height: 25,),
+
+                SizedBox(
+                  height: size.height * 0.065,
+                  width: double.infinity,
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => const PayPalPayment(),)
+                      );
+                    }, 
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromARGB(255, 255, 251, 9),
+                      foregroundColor: Colors.black.withAlpha(230)
+                    ),
+                    icon: Image.asset(
+                      'assets/images/paypal.png',
+                      scale: 6.0,
+                    ), 
+                    label: const Text('Pay with PayPal', style: TextStyle(fontSize: 27),),
+                  ),
+                ),
                 
               ],
             ),

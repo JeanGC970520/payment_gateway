@@ -1,4 +1,4 @@
-package com.example.payment_gateway
+package com.jeangarciacontreras.paymentgateway
 
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.android.FlutterFragmentActivity
