@@ -208,7 +208,12 @@ class _Body extends StatelessWidget {
                       debugPrint(user.toString());
 
                       paymentGatewayBloc.add(
-                        MakePaymentEvent(amount: '10', currency: 'usd', userInfo: user)
+                        MakePaymentEvent(
+                          amount: '10', 
+                          currency: 'usd', 
+                          userInfo: user,
+                          description: 'Pet\'s Donation'
+                        ),
                       );
     
                     }, 
