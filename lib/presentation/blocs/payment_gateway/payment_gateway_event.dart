@@ -12,10 +12,12 @@ class MakePaymentEvent extends PaymentGatewayEvent {
   final String amount;
   final String currency;
   final User userInfo;
+  final String description;
 
   const MakePaymentEvent({
     required this.amount, 
     required this.currency, 
     required this.userInfo,
+    required this.description,
   });
 }
